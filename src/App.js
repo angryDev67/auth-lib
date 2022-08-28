@@ -12,7 +12,7 @@ function App() {
   // const hex = buf2hex(derivedKey)
   // console.log('hex', hex)
 
-  const entropyStuff = MorfAccount.mnemonicToEntropy('wait walk verify vapor virus vicious', null)
+  const entropyStuff = MorfAccount.mnemonicToEntropy('stairs novel spell curve general social wear direct nature enter joke nurse help inhale absurd skin provide crack flash shop arrange dove ridge approve', null)
   console.log('entropyStuff', entropyStuff)
   return (
     <div className="App">

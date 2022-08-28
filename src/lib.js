@@ -32,8 +32,35 @@ export default class MorfAccount {
   }
 
   /**create Mnemonic from Entropy */
-   static entropyToMnemonic(entropyHex, wordList = null) {
+   static async entropyToMnemonic(entropyHex, wordList = null) {
+    const ENT = (entropyHex.length / 2) * 8
+    const CS = parseInt(ENT / 32)
 
+    // get the checksum
+    const checksum = await this.entropyChecksum(entropyHex)
+
+    // create the string of bits to use
+    let construct = new BN(entropyHex, 2)
+    construct = construct.toString(16) + checksum
+
+    const bits = construct.padStart((ENT + CS), '0')
+
+
+    // use provided wordList or default
+    const wordsList = wordList ? wordList : DEFAULT_WORD_LIST
+
+    // build word list
+    let result = []
+    bits.forEach(word => {
+      const index = wordsList.indexOf(word)
+
+      result.push(wordsList[index])
+
+    });
+
+    	// implode and enjoy
+    result = result.join(' ')
+    return result
   }
 
   /**reate Checksum from Entropy */
@@ -44,22 +71,23 @@ export default class MorfAccount {
     const CS = ENT / 32
 
     const hashHex = await sha256(hex2bin(entropyHex))
-    console.log('hashHex', hashHex)
+
 
     // create full checksum
     const bigN = new BN(hashHex, 16)
     let hashBits = bigN.toString(2)
+
     hashBits = hashBits.padStart(256, '0');
 
     // take only the bits we need
     const checksum = hashBits.substring(0, CS)
-    console.log('checksum2', checksum)
+    console.log('checksum2', typeof checksum)
 
     return checksum
   }
 
   /**create Entropy from Mnemonic */
-   static mnemonicToEntropy(mnemonic, wordList = null) {
+   static async mnemonicToEntropy(mnemonic, wordList = null) {
     const words = mnemonic?.split(' ')
 
     if(words.length % 3 !== 0) {
@@ -70,11 +98,13 @@ export default class MorfAccount {
 
     let bits = []
     console.log('bits1', bits)
-    wordsList.forEach(word => {
+    words.forEach(word => {
       const index = wordsList.indexOf(word)
 
       let construct = new BN(index, 10)
+
       construct = construct.toString(2)
+
 
       bits.push(construct.padStart(11, '0'))
 
@@ -82,28 +112,30 @@ export default class MorfAccount {
 
     	// implode the bitstring to it's original form
     bits = bits.join('')
-    console.log('BITS!', bits)
+    console.log('bits', bits)
+
     // calculate how long the checksum should be
     const CS = parseInt(bits.length / 33);
-    console.log('CS', CS)
+
     // calculate how long the original entropy should be
     const ENT = parseInt(bits.length - CS)
-    console.log('ENT', ENT)
+
     // get the checksum and the original entropy
     const checksum = bits.substr(-1 * CS)
-    console.log('checksum', checksum)
-    const entropyBits = bits.substr(0, CS)
-    console.log('entropyBits', entropyBits)
+
+    const entropyBits = bits.substr(0, bits.length - CS)
+
     // recreate the hex for the entropy
     let construct = new BN(entropyBits, 2)
     construct = construct.toString(16)
-    console.log('construct', construct)
 
     const entropyHex = construct.padStart((ENT * 2) / 8, '0')
 
     // validate
+    const validator = await this.entropyChecksum(entropyHex)
 
-    if (checksum !== this.entropyChecksum(entropyHex)) {
+    console.log('validator', validator, typeof validator)
+    if (checksum !== validator) {
       throw new Error('Checksum does not match!')
     }
 

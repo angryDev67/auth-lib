@@ -32,12 +32,10 @@ export function hex2bin(hex) {
   return result;
 }
 
-export async function sha256(message) {
-    // encode as UTF-8
-    const msgBuffer = new TextEncoder().encode(message);
-
+export async function sha256(buffer) {
+    console.log('buffer123', buffer)
     // hash the message
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
 
     // convert ArrayBuffer to Array
     const hashArray = Array.from(new Uint8Array(hashBuffer));
