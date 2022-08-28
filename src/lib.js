@@ -23,10 +23,13 @@ export default class MorfAccount {
   }
 
 
-   static generateAddress(passphrase = '') {
-    const entropy = this.generateEntropy(256)
-    const mnemonic = this.entropyToMnemonic(entropy)
-    const seed = this.mnemonicToSeedHex(mnemonic, passphrase)
+   static async generateAddress(passphrase = '') {
+    const entropy = await this.generateEntropy(256)
+    console.log('entropy', entropy)
+    const mnemonic = await this.entropyToMnemonic(entropy)
+    console.log('mnemonic', mnemonic)
+    const seed = await this.mnemonicToSeedHex(mnemonic, passphrase)
+    console.log('seed', seed)
     const HDKey_ = HDKey.fromMasterSeed(seed).derive(HD_PATH)
 
     let pubkey_bin = hex2bin(HDKey_.publicKey);

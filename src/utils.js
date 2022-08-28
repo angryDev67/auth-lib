@@ -66,7 +66,9 @@ export function toHexString(bytes) {
     console.log('bytes:', bytes)
     return bytes
       .map(function (byte) {
-        let propByte = typeof byte === 'bigint' ? byte : BN(byte)
+
+        let propByte = typeof byte === 'bigint' ? byte : BigInt(byte)
+
         // @ts-ignore
         //return (byte & 255n).toString(16)
         return (propByte & 255n).toString(16).padStart(2, '0')

@@ -3,6 +3,7 @@ import './App.css';
 import pbkdf2 from 'pbkdf2'
 import MorfAccount from './lib'
 import {buf2hex} from './utils'
+import { useEffect } from 'react';
 
 function App() {
   // const phrase = MorfAccount.normalizePassphrase('passphrase')
@@ -14,8 +15,14 @@ function App() {
 
   // const entropyStuff = MorfAccount.mnemonicToEntropy('stairs novel spell curve general social wear direct nature enter joke nurse help inhale absurd skin provide crack flash shop arrange dove ridge approve', null)
   // console.log('entropyStuff', entropyStuff)
-  const address = MorfAccount.generateAddress('test')
-  console.log('address', address)
+
+  useEffect(() => {
+    (async() => {
+
+      const address = await MorfAccount.generateAddress('test')
+      console.log('address', address)
+    })()
+  }, [])
   return (
     <div className="App">
       <header className="App-header">
