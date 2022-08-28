@@ -12,8 +12,10 @@ function App() {
   // const hex = buf2hex(derivedKey)
   // console.log('hex', hex)
 
-  const entropyStuff = MorfAccount.mnemonicToEntropy('stairs novel spell curve general social wear direct nature enter joke nurse help inhale absurd skin provide crack flash shop arrange dove ridge approve', null)
-  console.log('entropyStuff', entropyStuff)
+  // const entropyStuff = MorfAccount.mnemonicToEntropy('stairs novel spell curve general social wear direct nature enter joke nurse help inhale absurd skin provide crack flash shop arrange dove ridge approve', null)
+  // console.log('entropyStuff', entropyStuff)
+  const address = MorfAccount.generateAddress('test')
+  console.log('address', address)
   return (
     <div className="App">
       <header className="App-header">

@@ -51,6 +51,17 @@ export function buf2hex(buffer) { // buffer is an ArrayBuffer
       .join('');
 }
 
+export const getChunks = (array, size) => {
+  const chunkSize = size;
+  const result = []
+  for (let i = 0; i < array.length; i += chunkSize) {
+      const chunk = array.slice(i, i + chunkSize);
+      // do whatever
+    result.push(chunk)
+  }
+  return result
+}
+
 export function toHexString(bytes) {
     console.log('bytes:', bytes)
     return bytes

@@ -41,6 +41,7 @@
     "jest": "^27.4.3",
     "jest-resolve": "^27.4.2",
     "jest-watch-typeahead": "^1.0.0",
+    "keccak256": "^1.0.6",
     "mini-css-extract-plugin": "^2.4.5",
     "npm": "^8.18.0",
     "pbkdf2": "^3.1.2",
