@@ -1,4 +1,4 @@
-import { BN } from "bn.js";
+import BN from "bn.js";
 
 export async function pbkdf2(password, iterations=1e6) {
     const pwUtf8 = new TextEncoder().encode(password);                                           // encode pw as UTF-8
