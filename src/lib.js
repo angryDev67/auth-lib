@@ -32,6 +32,8 @@ export default class MorfAccount {
     console.log('seed', seed)
     const HDKey_ = HDKey.fromMasterSeed(seed).derive(HD_PATH)
 
+    console.log('HDKey_', HDKey_)
+
     let pubkey_bin = hex2bin(HDKey_.publicKey);
     if (pubkey_bin.length === 65) {
       pubkey_bin = pubkey_bin.substr(pubkey_bin, 1);
@@ -67,19 +69,23 @@ export default class MorfAccount {
     // get the checksum
     const checksum = await this.entropyChecksum(entropyHex)
 
+    console.log('11checksum', checksum)
+    console.log('entropyHex', entropyHex)
     // create the string of bits to use
-    let construct = new BN(entropyHex, 2)
-    construct = construct.toString(16) + checksum
+    let construct = new BN(entropyHex, 16)
+    console.log('construct', construct)
+    construct = construct.toString(2) + checksum
 
     const bits = construct.padStart((ENT + CS), '0')
 
-
+    console.log('bits', bits)
     // use provided wordList or default
     const wordsList = wordList ? wordList : DEFAULT_WORD_LIST
 
     // build word list
     let result = []
     const chunks = getChunks(bits, 11)
+    console.log('chunks', chunks)
     chunks.forEach(word => {
       let index = word.toString(2)
       index = new BN(index, 10)
